@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc ="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<!-- DispatcherServlet Context: определяет настройки одного сервлета; бины, 
+		которые доступны только ему -->
+
+	<!-- Разрешаем использование аннотаций Spring MVC (то есть @Controller и.т.д) -->
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="false" />
+		<property name="favorParameter" value="true" />
+		<property name="mediaTypes">
+			<value>
+				json=application/json
+			</value>
+		</property>
+	</bean>
+	
+	<!-- Всю статику (изображения, css-файлы, javascript) положим в папку webapp/resources 
+		и замаппим их на урл вида /resources/** -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Отображение видов на jsp-файлы, лежащие в папке /WEB-INF/views -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- Файл с настройками контроллеров -->
+	<import resource="controllers.xml" />
+
+</beans>
